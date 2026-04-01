@@ -3,10 +3,12 @@ import Foundation
 @MainActor
 final class TaskDetailViewModel {
     private let repository: TaskRepositoryProtocol
+    private let subtaskRepository: SubtaskRepositoryProtocol
     private(set) var task: Task
 
-    init(repository: TaskRepositoryProtocol, task: Task) {
+    init(repository: TaskRepositoryProtocol, subtaskRepository: SubtaskRepositoryProtocol, task: Task) {
         self.repository = repository
+        self.subtaskRepository = subtaskRepository
         self.task = task
     }
 
@@ -21,15 +23,19 @@ final class TaskDetailViewModel {
     }
 
     func toggleComplete() throws {
-        var t = task
-        t.isCompleted.toggle()
-        try repository.save(t)
-        task = t
+        try toggleCompletion()
     }
 
     func toggleCompletion() throws {
+        let subs = try subtaskRepository.fetchSubtasks(taskId: task.id)
         var t = task
-        t.isCompleted.toggle()
+        if subs.isEmpty {
+            t.isCompleted.toggle()
+        } else {
+            let newCompleted = !t.isCompleted
+            try subtaskRepository.setAllSubtasksCompleted(taskId: task.id, completed: newCompleted)
+            t.isCompleted = newCompleted
+        }
         try repository.save(t)
         task = t
     }

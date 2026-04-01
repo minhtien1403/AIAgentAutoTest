@@ -17,10 +17,15 @@ enum TaskListFilter: String, CaseIterable, Sendable {
 @MainActor
 final class TaskListViewModel {
     private let repository: TaskRepositoryProtocol
+    private let categoryRepository: CategoryRepositoryProtocol
+    private let subtaskRepository: SubtaskRepositoryProtocol
 
     private(set) var tasks: [Task] = []
+    private(set) var categories: [Category] = []
     var searchText: String = ""
     var filter: TaskListFilter = .all
+    /// `nil` means show tasks in all categories.
+    var selectedCategoryId: UUID?
 
     var displayedTasks: [Task] {
         var list = tasks
@@ -28,6 +33,9 @@ final class TaskListViewModel {
         case .all: break
         case .active: list = list.filter { !$0.isCompleted }
         case .completed: list = list.filter { $0.isCompleted }
+        }
+        if let cid = selectedCategoryId {
+            list = list.filter { $0.categoryId == cid }
         }
         let q = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         if !q.isEmpty {
@@ -42,8 +50,14 @@ final class TaskListViewModel {
     var isEmpty: Bool { tasks.isEmpty }
     var isDisplayedEmpty: Bool { displayedTasks.isEmpty }
 
-    init(repository: TaskRepositoryProtocol) {
+    init(
+        repository: TaskRepositoryProtocol,
+        categoryRepository: CategoryRepositoryProtocol,
+        subtaskRepository: SubtaskRepositoryProtocol
+    ) {
         self.repository = repository
+        self.categoryRepository = categoryRepository
+        self.subtaskRepository = subtaskRepository
     }
 
     func load() {
@@ -51,6 +65,11 @@ final class TaskListViewModel {
             tasks = try repository.fetchAll()
         } catch {
             tasks = []
+        }
+        do {
+            categories = try categoryRepository.fetchCategories()
+        } catch {
+            categories = []
         }
     }
 
@@ -63,8 +82,15 @@ final class TaskListViewModel {
 
     func toggleComplete(id: UUID) {
         guard var task = tasks.first(where: { $0.id == id }) else { return }
-        task.isCompleted.toggle()
         do {
+            let subs = try subtaskRepository.fetchSubtasks(taskId: id)
+            if subs.isEmpty {
+                task.isCompleted.toggle()
+            } else {
+                let newCompleted = !task.isCompleted
+                try subtaskRepository.setAllSubtasksCompleted(taskId: id, completed: newCompleted)
+                task.isCompleted = newCompleted
+            }
             try repository.save(task)
             load()
         } catch {}

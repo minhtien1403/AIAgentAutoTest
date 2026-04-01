@@ -29,6 +29,7 @@ struct Task: Equatable, Sendable, Identifiable {
     var priority: Priority
     var dueDate: Date?
     var isCompleted: Bool
+    var categoryId: UUID?
     let createdAt: Date
 
     init(
@@ -38,6 +39,7 @@ struct Task: Equatable, Sendable, Identifiable {
         priority: Priority = .medium,
         dueDate: Date? = nil,
         isCompleted: Bool = false,
+        categoryId: UUID? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -46,6 +48,7 @@ struct Task: Equatable, Sendable, Identifiable {
         self.priority = priority
         self.dueDate = dueDate
         self.isCompleted = isCompleted
+        self.categoryId = categoryId
         self.createdAt = createdAt
     }
 }

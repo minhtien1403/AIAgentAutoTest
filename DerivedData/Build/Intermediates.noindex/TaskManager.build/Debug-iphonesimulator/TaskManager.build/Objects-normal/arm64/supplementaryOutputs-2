@@ -1,0 +1,30 @@
+{
+  "/Users/tranminhtien/Documents/Project/TaskManager/TaskManager/Repository/CategoryRepository.swift" : {
+    "const-values" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/CategoryRepository.swiftconstvalues",
+    "dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/CategoryRepository.d",
+    "diagnostics" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/CategoryRepository.dia",
+    "object" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/CategoryRepository.o",
+    "swift-dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/CategoryRepository.swiftdeps"
+  },
+  "/Users/tranminhtien/Documents/Project/TaskManager/TaskManager/Repository/SubtaskEntity+Mapping.swift" : {
+    "const-values" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskEntity+Mapping.swiftconstvalues",
+    "dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskEntity+Mapping.d",
+    "diagnostics" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskEntity+Mapping.dia",
+    "object" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskEntity+Mapping.o",
+    "swift-dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskEntity+Mapping.swiftdeps"
+  },
+  "/Users/tranminhtien/Documents/Project/TaskManager/TaskManager/Repository/SubtaskRepository.swift" : {
+    "const-values" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskRepository.swiftconstvalues",
+    "dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskRepository.d",
+    "diagnostics" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskRepository.dia",
+    "object" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskRepository.o",
+    "swift-dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskRepository.swiftdeps"
+  },
+  "/Users/tranminhtien/Documents/Project/TaskManager/TaskManager/Repository/TaskEntity+Mapping.swift" : {
+    "const-values" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskEntity+Mapping.swiftconstvalues",
+    "dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskEntity+Mapping.d",
+    "diagnostics" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskEntity+Mapping.dia",
+    "object" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskEntity+Mapping.o",
+    "swift-dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskEntity+Mapping.swiftdeps"
+  }
+}

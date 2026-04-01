@@ -10,6 +10,7 @@ extension TaskEntity {
             priority: Priority(rawValue: priorityRaw ?? Priority.medium.rawValue) ?? .medium,
             dueDate: dueDate,
             isCompleted: isCompleted,
+            categoryId: categoryId,
             createdAt: createdAt ?? Date()
         )
     }
@@ -21,6 +22,7 @@ extension TaskEntity {
         priorityRaw = item.priority.rawValue
         dueDate = item.dueDate
         isCompleted = item.isCompleted
+        categoryId = item.categoryId
         createdAt = item.createdAt
     }
 }

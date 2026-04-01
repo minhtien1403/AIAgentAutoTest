@@ -4,6 +4,8 @@ final class TaskListViewController: UIViewController {
 
     private let viewModel: TaskListViewModel
     private let repository: TaskRepositoryProtocol
+    private let categoryRepository: CategoryRepositoryProtocol
+    private let subtaskRepository: SubtaskRepositoryProtocol
 
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let searchBar = UISearchBar(frame: .zero)
@@ -16,10 +18,18 @@ final class TaskListViewController: UIViewController {
         titleAccessibilityIdentifier: AccessibilityIDs.TaskList.headerTitle
     )
     private var filterHeaderButton: UIButton!
+    private var categoryFilterButton: UIButton!
 
-    init(viewModel: TaskListViewModel, repository: TaskRepositoryProtocol) {
+    init(
+        viewModel: TaskListViewModel,
+        repository: TaskRepositoryProtocol,
+        categoryRepository: CategoryRepositoryProtocol,
+        subtaskRepository: SubtaskRepositoryProtocol
+    ) {
         self.viewModel = viewModel
         self.repository = repository
+        self.categoryRepository = categoryRepository
+        self.subtaskRepository = subtaskRepository
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -32,6 +42,20 @@ final class TaskListViewController: UIViewController {
         view.backgroundColor = .systemGroupedBackground
         view.accessibilityIdentifier = AccessibilityIDs.TaskList.screen
 
+        appHeaderView.addTrailingIconButton(
+            systemImageName: "folder",
+            accessibilityIdentifier: AccessibilityIDs.TaskList.categoriesButton,
+            accessibilityLabel: String(localized: "Categories"),
+            target: self,
+            action: #selector(categoriesTapped)
+        )
+        categoryFilterButton = appHeaderView.addTrailingIconButton(
+            systemImageName: "tag.fill",
+            accessibilityIdentifier: AccessibilityIDs.TaskList.categoryFilterButton,
+            accessibilityLabel: String(localized: "Filter by category"),
+            target: self,
+            action: #selector(categoryFilterTapped)
+        )
         filterHeaderButton = appHeaderView.addTrailingIconButton(
             systemImageName: "line.3.horizontal.decrease.circle",
             accessibilityIdentifier: AccessibilityIDs.TaskList.filterButton,
@@ -147,9 +171,49 @@ final class TaskListViewController: UIViewController {
         }
     }
 
+    @objc private func categoriesTapped() {
+        let list = CategoryListViewController(
+            viewModel: CategoryListViewModel(repository: categoryRepository)
+        ) { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+            self?.refresh()
+        }
+        navigationController?.pushViewController(list, animated: true)
+    }
+
+    @objc private func categoryFilterTapped() {
+        let alert = UIAlertController(
+            title: String(localized: "Category"),
+            message: String(localized: "Show tasks in"),
+            preferredStyle: .actionSheet
+        )
+        alert.view.accessibilityIdentifier = AccessibilityIDs.Filter.categoryAlert
+        let allAction = UIAlertAction(title: String(localized: "All categories"), style: .default) { [weak self] _ in
+            self?.viewModel.selectedCategoryId = nil
+            self?.tableView.reloadData()
+            self?.updateEmptyState()
+        }
+        alert.addAction(allAction)
+        for cat in viewModel.categories {
+            let action = UIAlertAction(title: cat.name, style: .default) { [weak self] _ in
+                self?.viewModel.selectedCategoryId = cat.id
+                self?.tableView.reloadData()
+                self?.updateEmptyState()
+            }
+            alert.addAction(action)
+        }
+        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel))
+        if let pop = alert.popoverPresentationController {
+            pop.sourceView = categoryFilterButton
+            pop.sourceRect = categoryFilterButton.bounds
+            pop.permittedArrowDirections = .up
+        }
+        present(alert, animated: true)
+    }
+
     @objc private func addTapped() {
         let form = CreateTaskViewController(
-            viewModel: CreateTaskViewModel(repository: repository, mode: .create)
+            viewModel: CreateTaskViewModel(repository: repository, categoryRepository: categoryRepository, mode: .create)
         ) { [weak self] in
             self?.navigationController?.popViewController(animated: true)
             self?.refresh()
@@ -179,8 +243,10 @@ final class TaskListViewController: UIViewController {
 
     private func openDetail(_ task: Task) {
         let detail = TaskDetailViewController(
-            viewModel: TaskDetailViewModel(repository: repository, task: task),
-            repository: repository
+            viewModel: TaskDetailViewModel(repository: repository, subtaskRepository: subtaskRepository, task: task),
+            repository: repository,
+            categoryRepository: categoryRepository,
+            subtaskRepository: subtaskRepository
         ) { [weak self] in
             self?.navigationController?.popViewController(animated: true)
             self?.refresh()
@@ -200,7 +266,11 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         let task = viewModel.displayedTasks[indexPath.row]
-        cell.configure(task: task)
+        let catName: String? = {
+            guard let cid = task.categoryId else { return nil }
+            return viewModel.categories.first(where: { $0.id == cid })?.name
+        }()
+        cell.configure(task: task, categoryName: catName)
         cell.onCompleteTapped = { [weak self] in
             self?.viewModel.toggleComplete(id: task.id)
             self?.tableView.reloadRows(at: [indexPath], with: .automatic)

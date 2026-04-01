@@ -1,0 +1,30 @@
+{
+  "/Users/tranminhtien/Documents/Project/TaskManager/TaskManager/ViewModels/CreateTaskViewModel.swift" : {
+    "const-values" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/CreateTaskViewModel.swiftconstvalues",
+    "dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/CreateTaskViewModel.d",
+    "diagnostics" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/CreateTaskViewModel.dia",
+    "object" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/CreateTaskViewModel.o",
+    "swift-dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/CreateTaskViewModel.swiftdeps"
+  },
+  "/Users/tranminhtien/Documents/Project/TaskManager/TaskManager/ViewModels/SubtaskViewModel.swift" : {
+    "const-values" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskViewModel.swiftconstvalues",
+    "dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskViewModel.d",
+    "diagnostics" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskViewModel.dia",
+    "object" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskViewModel.o",
+    "swift-dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/SubtaskViewModel.swiftdeps"
+  },
+  "/Users/tranminhtien/Documents/Project/TaskManager/TaskManager/ViewModels/TaskDetailViewModel.swift" : {
+    "const-values" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskDetailViewModel.swiftconstvalues",
+    "dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskDetailViewModel.d",
+    "diagnostics" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskDetailViewModel.dia",
+    "object" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskDetailViewModel.o",
+    "swift-dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskDetailViewModel.swiftdeps"
+  },
+  "/Users/tranminhtien/Documents/Project/TaskManager/TaskManager/ViewModels/TaskListViewModel.swift" : {
+    "const-values" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskListViewModel.swiftconstvalues",
+    "dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskListViewModel.d",
+    "diagnostics" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskListViewModel.dia",
+    "object" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskListViewModel.o",
+    "swift-dependencies" : "/Users/tranminhtien/Documents/Project/TaskManager/DerivedData/Build/Intermediates.noindex/TaskManager.build/Debug-iphonesimulator/TaskManager.build/Objects-normal/arm64/TaskListViewModel.swiftdeps"
+  }
+}

@@ -16,9 +16,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         let repository = TaskRepository()
+        let categoryRepository = CategoryRepository()
+        let subtaskRepository = SubtaskRepository()
         let list = TaskListViewController(
-            viewModel: TaskListViewModel(repository: repository),
-            repository: repository
+            viewModel: TaskListViewModel(
+                repository: repository,
+                categoryRepository: categoryRepository,
+                subtaskRepository: subtaskRepository
+            ),
+            repository: repository,
+            categoryRepository: categoryRepository,
+            subtaskRepository: subtaskRepository
         )
         let navigation = UINavigationController(rootViewController: list)
         window.rootViewController = navigation

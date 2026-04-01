@@ -8,6 +8,7 @@ enum CreateTaskMode: Sendable {
 @MainActor
 final class CreateTaskViewModel {
     private let repository: TaskRepositoryProtocol
+    private let categoryRepository: CategoryRepositoryProtocol
     let mode: CreateTaskMode
 
     var titleText: String = ""
@@ -15,9 +16,13 @@ final class CreateTaskViewModel {
     var priority: Priority = .medium
     var dueDate: Date?
     var hasDueDate: Bool = false
+    var categoryId: UUID?
 
-    init(repository: TaskRepositoryProtocol, mode: CreateTaskMode) {
+    private(set) var categories: [Category] = []
+
+    init(repository: TaskRepositoryProtocol, categoryRepository: CategoryRepositoryProtocol, mode: CreateTaskMode) {
         self.repository = repository
+        self.categoryRepository = categoryRepository
         self.mode = mode
         switch mode {
         case .create:
@@ -28,6 +33,15 @@ final class CreateTaskViewModel {
             priority = task.priority
             dueDate = task.dueDate
             hasDueDate = task.dueDate != nil
+            categoryId = task.categoryId
+        }
+    }
+
+    func loadCategories() {
+        do {
+            categories = try categoryRepository.fetchCategories()
+        } catch {
+            categories = []
         }
     }
 
@@ -45,7 +59,8 @@ final class CreateTaskViewModel {
                 title: trimmedTitle,
                 description: desc.isEmpty ? nil : desc,
                 priority: priority,
-                dueDate: hasDueDate ? dueDate : nil
+                dueDate: hasDueDate ? dueDate : nil,
+                categoryId: categoryId
             )
             try repository.save(task)
         case .edit(let existing):
@@ -54,6 +69,7 @@ final class CreateTaskViewModel {
             updated.description = desc.isEmpty ? nil : desc
             updated.priority = priority
             updated.dueDate = hasDueDate ? dueDate : nil
+            updated.categoryId = categoryId
             try repository.save(updated)
         }
     }

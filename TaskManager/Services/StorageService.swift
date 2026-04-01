@@ -9,8 +9,12 @@ final class StorageService {
 
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "SmartTask")
-        if inMemory {
-            container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
+        if let description = container.persistentStoreDescriptions.first {
+            if inMemory {
+                description.url = URL(fileURLWithPath: "/dev/null")
+            }
+            description.setOption(true as NSNumber, forKey: NSMigratePersistentStoresAutomaticallyOption)
+            description.setOption(true as NSNumber, forKey: NSInferMappingModelAutomaticallyOption)
         }
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {

@@ -17,9 +17,30 @@ enum AccessibilityIDs {
         static let addButton = "smartTask_taskList_addButton"
         static let floatingAddButton = "smartTask_taskList_floatingAddButton"
         static let filterButton = "smartTask_taskList_filterButton"
+        static let categoriesButton = "smartTask_taskList_categoriesButton"
+        static let categoryFilterButton = "smartTask_taskList_categoryFilterButton"
         static let emptyState = "smartTask_taskList_emptyState"
         static let emptyStateTitle = "smartTask_taskList_emptyState_title"
         static let emptyStateMessage = "smartTask_taskList_emptyState_message"
+    }
+
+    enum CategorySelect {
+        static let screen = "smartTask_categorySelect_screen"
+        static let backButton = "smartTask_categorySelect_backButton"
+        static let tableView = "smartTask_categorySelect_tableView"
+        static let rowNone = "smartTask_categorySelect_row_none"
+        static func row(categoryId: UUID) -> String { "smartTask_categorySelect_row_\(categoryId.uuidString)" }
+    }
+
+    enum CategoryList {
+        static let screen = "smartTask_categoryList_screen"
+        static let backButton = "smartTask_categoryList_backButton"
+        static let addButton = "smartTask_categoryList_addButton"
+        static let tableView = "smartTask_categoryList_tableView"
+        static func row(categoryId: UUID) -> String { "smartTask_categoryList_row_\(categoryId.uuidString)" }
+        static let newCategoryAlert = "smartTask_categoryList_newCategoryAlert"
+        static let newCategoryNameField = "smartTask_categoryList_newCategoryNameField"
+        static let validationAlert = "smartTask_categoryList_validationAlert"
     }
 
     enum TaskCell {
@@ -28,6 +49,7 @@ enum AccessibilityIDs {
         static func priorityBadge(taskId: UUID) -> String { "smartTask_taskCell_priorityBadge_\(taskId.uuidString)" }
         static func dueDate(taskId: UUID) -> String { "smartTask_taskCell_dueDate_\(taskId.uuidString)" }
         static func completeToggle(taskId: UUID) -> String { "smartTask_taskCell_completeToggle_\(taskId.uuidString)" }
+        static func category(taskId: UUID) -> String { "smartTask_taskCell_category_\(taskId.uuidString)" }
     }
 
     enum TaskDetail {
@@ -41,6 +63,11 @@ enum AccessibilityIDs {
         static let editButton = "smartTask_taskDetail_editButton"
         static let deleteButton = "smartTask_taskDetail_deleteButton"
         static let markCompleteButton = "smartTask_taskDetail_markCompleteButton"
+        static let categoryLabel = "smartTask_taskDetail_categoryLabel"
+        static let subtasksTable = "smartTask_taskDetail_subtasksTable"
+        static let addSubtaskButton = "smartTask_taskDetail_addSubtaskButton"
+        static func subtaskRow(subtaskId: UUID) -> String { "smartTask_taskDetail_subtaskRow_\(subtaskId.uuidString)" }
+        static func subtaskToggle(subtaskId: UUID) -> String { "smartTask_taskDetail_subtaskToggle_\(subtaskId.uuidString)" }
     }
 
     enum CreateTask {
@@ -55,6 +82,7 @@ enum AccessibilityIDs {
         static let saveButton = "smartTask_taskForm_saveButton"
         static let cancelButton = "smartTask_taskForm_cancelButton"
         static let validationAlert = "smartTask_taskForm_validationAlert"
+        static let categorySelectionRow = "smartTask_taskForm_categorySelectionRow"
     }
 
     enum DeleteConfirm {
@@ -65,6 +93,7 @@ enum AccessibilityIDs {
 
     enum Filter {
         static let alert = "smartTask_filter_alert"
+        static let categoryAlert = "smartTask_filter_categoryAlert"
     }
 
     enum TaskInputField {

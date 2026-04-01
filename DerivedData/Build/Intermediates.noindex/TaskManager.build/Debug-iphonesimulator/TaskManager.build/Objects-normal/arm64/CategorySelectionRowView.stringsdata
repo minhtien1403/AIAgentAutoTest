@@ -1,0 +1,32 @@
+{
+  "source": "/Users/tranminhtien/Documents/Project/TaskManager/TaskManager/Views/CategorySelectionRowView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Category",
+        "location": {
+          "startingColumn": 47,
+          "startingLine": 17
+        }
+      },
+      {
+        "comment": "",
+        "key": "Category",
+        "location": {
+          "startingColumn": 59,
+          "startingLine": 29
+        }
+      },
+      {
+        "comment": "",
+        "key": "None",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 82
+        }
+      }
+    ]
+  },
+  "version": 1
+}

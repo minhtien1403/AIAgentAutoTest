@@ -18,6 +18,7 @@ final class CreateTaskViewController: UIViewController {
     private let includeDueDateSwitch = UISwitch()
     private let dueDatePicker = SimpleDatePickerView()
     private let clearDueDateButton = UIButton(type: .system)
+    private let categorySelectionRow = CategorySelectionRowView()
 
     init(viewModel: CreateTaskViewModel, onDone: @escaping () -> Void) {
         self.viewModel = viewModel
@@ -155,6 +156,7 @@ final class CreateTaskViewController: UIViewController {
         contentStack.addArrangedSubview(descriptionInputContainer)
         contentStack.addArrangedSubview(priorityLabel)
         contentStack.addArrangedSubview(priorityControl)
+        contentStack.addArrangedSubview(categorySelectionRow)
         contentStack.addArrangedSubview(dueDateRow)
         contentStack.addArrangedSubview(clearDueDateButton)
         contentStack.addArrangedSubview(dueDatePicker)
@@ -174,7 +176,30 @@ final class CreateTaskViewController: UIViewController {
             descriptionInputContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: 100)
         ])
 
+        viewModel.loadCategories()
+        refreshCategoryRow()
+        categorySelectionRow.onTap = { [weak self] in
+            self?.presentCategorySelect()
+        }
+
         updateDueDateVisibility()
+    }
+
+    private func refreshCategoryRow() {
+        viewModel.loadCategories()
+        categorySelectionRow.configure(categories: viewModel.categories, selectedCategoryId: viewModel.categoryId)
+    }
+
+    private func presentCategorySelect() {
+        viewModel.loadCategories()
+        let select = CategorySelectViewController(
+            categories: viewModel.categories,
+            selectedCategoryId: viewModel.categoryId
+        ) { [weak self] id in
+            self?.viewModel.categoryId = id
+            self?.refreshCategoryRow()
+        }
+        navigationController?.pushViewController(select, animated: true)
     }
 
     private func updateDueDateVisibility() {

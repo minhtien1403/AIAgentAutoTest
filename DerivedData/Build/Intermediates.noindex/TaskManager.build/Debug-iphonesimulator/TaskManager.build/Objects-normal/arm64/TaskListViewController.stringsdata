@@ -1,0 +1,56 @@
+{
+  "source": "/Users/tranminhtien/Documents/Project/TaskManager/TaskManager/ViewControllers/TaskList/TaskListViewController.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Categories",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 48
+        }
+      },
+      {
+        "comment": "",
+        "key": "Filter by category",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 55
+        }
+      },
+      {
+        "comment": "",
+        "key": "Category",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 186
+        }
+      },
+      {
+        "comment": "",
+        "key": "Show tasks in",
+        "location": {
+          "startingColumn": 40,
+          "startingLine": 187
+        }
+      },
+      {
+        "comment": "",
+        "key": "All categories",
+        "location": {
+          "startingColumn": 64,
+          "startingLine": 191
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 64,
+          "startingLine": 205
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -4,6 +4,9 @@ final class TaskDetailViewController: UIViewController {
 
     private var viewModel: TaskDetailViewModel
     private let repository: TaskRepositoryProtocol
+    private let categoryRepository: CategoryRepositoryProtocol
+    private let subtaskRepository: SubtaskRepositoryProtocol
+    private var subtaskViewModel: SubtaskViewModel!
     private let onDone: () -> Void
 
     private let appHeaderView: AppHeaderView
@@ -17,14 +20,27 @@ final class TaskDetailViewController: UIViewController {
     private let titleRow = UIStackView()
     private let titleLabel = UILabel()
     private let priorityBadge = PriorityBadgeView()
+    private let categoryLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let dueDateLabel = UILabel()
     private let statusLabel = UILabel()
+    private let subtasksHeadingLabel = UILabel()
+    private let subtasksTableView = UITableView(frame: .zero, style: .plain)
+    private let addSubtaskButton = UIButton(type: .system)
+    private var subtasksHeightConstraint: NSLayoutConstraint!
     private let toggleCompleteButton = UIButton(type: .system)
 
-    init(viewModel: TaskDetailViewModel, repository: TaskRepositoryProtocol, onDone: @escaping () -> Void) {
+    init(
+        viewModel: TaskDetailViewModel,
+        repository: TaskRepositoryProtocol,
+        categoryRepository: CategoryRepositoryProtocol,
+        subtaskRepository: SubtaskRepositoryProtocol,
+        onDone: @escaping () -> Void
+    ) {
         self.viewModel = viewModel
         self.repository = repository
+        self.categoryRepository = categoryRepository
+        self.subtaskRepository = subtaskRepository
         self.onDone = onDone
         self.appHeaderView = AppHeaderView(
             title: String(localized: "Task"),
@@ -42,6 +58,12 @@ final class TaskDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemGroupedBackground
         view.accessibilityIdentifier = AccessibilityIDs.TaskDetail.screen
+
+        subtaskViewModel = SubtaskViewModel(
+            subtaskRepository: subtaskRepository,
+            taskRepository: repository,
+            taskId: viewModel.task.id
+        )
 
         appHeaderView.addLeadingIconButton(
             systemImageName: "chevron.left",
@@ -102,6 +124,11 @@ final class TaskDetailViewController: UIViewController {
         titleRow.addArrangedSubview(titleLabel)
         titleRow.addArrangedSubview(priorityBadge)
 
+        categoryLabel.font = .preferredFont(forTextStyle: .subheadline)
+        categoryLabel.textColor = .secondaryLabel
+        categoryLabel.numberOfLines = 0
+        categoryLabel.accessibilityIdentifier = AccessibilityIDs.TaskDetail.categoryLabel
+
         descriptionLabel.font = .preferredFont(forTextStyle: .body)
         descriptionLabel.numberOfLines = 0
         descriptionLabel.textColor = .secondaryLabel
@@ -113,16 +140,49 @@ final class TaskDetailViewController: UIViewController {
         statusLabel.font = .preferredFont(forTextStyle: .headline)
         statusLabel.accessibilityIdentifier = AccessibilityIDs.TaskDetail.completionStatus
 
+        subtasksHeadingLabel.text = String(localized: "Subtasks")
+        subtasksHeadingLabel.font = .preferredFont(forTextStyle: .subheadline)
+        subtasksHeadingLabel.textColor = .secondaryLabel
+
+        subtasksTableView.translatesAutoresizingMaskIntoConstraints = false
+        subtasksTableView.register(SubtaskCell.self, forCellReuseIdentifier: SubtaskCell.reuseId)
+        subtasksTableView.dataSource = self
+        subtasksTableView.delegate = self
+        subtasksTableView.isScrollEnabled = false
+        subtasksTableView.backgroundColor = .secondarySystemGroupedBackground
+        subtasksTableView.separatorStyle = .singleLine
+        subtasksTableView.layer.cornerRadius = 12
+        if #available(iOS 13.0, *) {
+            subtasksTableView.layer.cornerCurve = .continuous
+        }
+        subtasksTableView.clipsToBounds = true
+        subtasksTableView.rowHeight = UITableView.automaticDimension
+        subtasksTableView.estimatedRowHeight = 52
+        subtasksTableView.sectionHeaderHeight = 0
+        subtasksTableView.sectionFooterHeight = 0
+        subtasksTableView.accessibilityIdentifier = AccessibilityIDs.TaskDetail.subtasksTable
+        subtasksHeightConstraint = subtasksTableView.heightAnchor.constraint(equalToConstant: 0)
+
+        addSubtaskButton.setTitle(String(localized: "Add subtask"), for: .normal)
+        addSubtaskButton.addAction(UIAction { [weak self] _ in self?.addSubtaskTapped() }, for: .touchUpInside)
+        addSubtaskButton.accessibilityIdentifier = AccessibilityIDs.TaskDetail.addSubtaskButton
+
         toggleCompleteButton.addAction(UIAction { [weak self] _ in
             self?.toggleCompleteTapped()
         }, for: .touchUpInside)
 
         stack.addArrangedSubview(titleRow)
+        stack.addArrangedSubview(categoryLabel)
         stack.addArrangedSubview(descriptionLabel)
         stack.addArrangedSubview(dueDateLabel)
         stack.addArrangedSubview(statusLabel)
+        stack.addArrangedSubview(subtasksHeadingLabel)
+        stack.addArrangedSubview(subtasksTableView)
+        stack.addArrangedSubview(addSubtaskButton)
         stack.addArrangedSubview(actionStack)
-        stack.setCustomSpacing(24, after: statusLabel)
+        stack.setCustomSpacing(24, after: addSubtaskButton)
+
+        NSLayoutConstraint.activate([subtasksHeightConstraint])
 
         view.addSubview(scrollView)
         scrollView.addSubview(stack)
@@ -141,6 +201,11 @@ final class TaskDetailViewController: UIViewController {
         applyTask()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        syncSubtasksTableViewHeight()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -152,6 +217,20 @@ final class TaskDetailViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
 
+    private func reloadSubtasksUI() {
+        subtaskViewModel.loadSubtasks()
+        subtasksTableView.reloadData()
+        syncSubtasksTableViewHeight()
+    }
+
+    /// Embedded table uses a fixed height constraint; keep it equal to content size so multi-line / Dynamic Type rows are not clipped.
+    private func syncSubtasksTableViewHeight() {
+        subtasksTableView.layoutIfNeeded()
+        let h = subtasksTableView.contentSize.height
+        if abs(subtasksHeightConstraint.constant - h) < 0.5 { return }
+        subtasksHeightConstraint.constant = h
+    }
+
     private func applyTask() {
         let t = viewModel.task
         titleLabel.text = t.title
@@ -161,6 +240,14 @@ final class TaskDetailViewController: UIViewController {
             accessibilityId: AccessibilityIDs.TaskDetail.priority,
             style: .tag
         )
+        if let cid = t.categoryId,
+           let name = (try? categoryRepository.fetchCategories())?.first(where: { $0.id == cid })?.name {
+            categoryLabel.text = String(localized: "Category: \(name)")
+            categoryLabel.isHidden = false
+        } else {
+            categoryLabel.text = nil
+            categoryLabel.isHidden = true
+        }
         if let d = t.dueDate {
             let f = DateFormatter()
             f.dateStyle = .full
@@ -172,11 +259,16 @@ final class TaskDetailViewController: UIViewController {
         let toggleTitle = t.isCompleted ? String(localized: "Mark as active") : String(localized: "Mark complete")
         Self.stylePlainActionButtonTitle(toggleCompleteButton, title: toggleTitle, titleColor: .white)
         toggleCompleteButton.accessibilityLabel = toggleTitle
+        reloadSubtasksUI()
     }
 
     @objc private func editTapped() {
         let form = CreateTaskViewController(
-            viewModel: CreateTaskViewModel(repository: repository, mode: .edit(viewModel.task)),
+            viewModel: CreateTaskViewModel(
+                repository: repository,
+                categoryRepository: categoryRepository,
+                mode: .edit(viewModel.task)
+            ),
             onDone: { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
                 self?.viewModel.reload()
@@ -208,6 +300,30 @@ final class TaskDetailViewController: UIViewController {
         present(alert, animated: true)
     }
 
+    private func addSubtaskTapped() {
+        let alert = UIAlertController(title: String(localized: "New subtask"), message: nil, preferredStyle: .alert)
+        alert.addTextField { $0.placeholder = String(localized: "Title") }
+        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel))
+        alert.addAction(UIAlertAction(title: String(localized: "Add"), style: .default) { [weak self] _ in
+            guard let self else { return }
+            let title = alert.textFields?.first?.text ?? ""
+            do {
+                try self.subtaskViewModel.addSubtask(title: title)
+                self.viewModel.reload()
+                self.applyTask()
+            } catch {
+                let err = UIAlertController(
+                    title: String(localized: "Cannot add"),
+                    message: String(localized: "Subtask title cannot be empty."),
+                    preferredStyle: .alert
+                )
+                err.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(err, animated: true)
+            }
+        })
+        present(alert, animated: true)
+    }
+
     private func toggleCompleteTapped() {
         do {
             try viewModel.toggleCompletion()
@@ -227,6 +343,54 @@ final class TaskDetailViewController: UIViewController {
             return out
         }
         button.configuration = config
+    }
+}
+
+extension TaskDetailViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        subtaskViewModel.subtasks.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SubtaskCell.reuseId, for: indexPath) as? SubtaskCell else {
+            return UITableViewCell()
+        }
+        let sub = subtaskViewModel.subtasks[indexPath.row]
+        cell.accessibilityIdentifier = AccessibilityIDs.TaskDetail.subtaskRow(subtaskId: sub.id)
+        cell.configure(
+            subtask: sub,
+            accessibilityToggleId: AccessibilityIDs.TaskDetail.subtaskToggle(subtaskId: sub.id)
+        )
+        cell.onToggle = { [weak self] in
+            guard let self else { return }
+            do {
+                try self.subtaskViewModel.toggleSubtaskCompletion(id: sub.id)
+                self.viewModel.reload()
+                self.applyTask()
+            } catch {}
+        }
+        return cell
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        let sub = subtaskViewModel.subtasks[indexPath.row]
+        let del = UIContextualAction(style: .destructive, title: String(localized: "Delete")) { [weak self] _, _, done in
+            guard let self else {
+                done(true)
+                return
+            }
+            do {
+                try self.subtaskViewModel.deleteSubtask(id: sub.id)
+                self.viewModel.reload()
+                self.applyTask()
+            } catch {}
+            done(true)
+        }
+        del.image = UIImage(systemName: "trash")
+        return UISwipeActionsConfiguration(actions: [del])
     }
 }
 

@@ -4,20 +4,25 @@ final class TaskCell: UITableViewCell {
     static let reuseId = "TaskCell"
 
     private let titleLabel = UILabel()
+    private let categoryLabel = UILabel()
     private let dueDateLabel = UILabel()
     private let priorityBadge = PriorityBadgeView()
     private let completeButton = UIButton(type: .system)
 
     var onCompleteTapped: (() -> Void)?
 
+    private var categoryHeightConstraint: NSLayoutConstraint!
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .default
         contentView.addSubview(titleLabel)
+        contentView.addSubview(categoryLabel)
         contentView.addSubview(dueDateLabel)
         contentView.addSubview(priorityBadge)
         contentView.addSubview(completeButton)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
         dueDateLabel.translatesAutoresizingMaskIntoConstraints = false
         priorityBadge.translatesAutoresizingMaskIntoConstraints = false
         completeButton.translatesAutoresizingMaskIntoConstraints = false
@@ -26,6 +31,11 @@ final class TaskCell: UITableViewCell {
         titleLabel.numberOfLines = 2
         titleLabel.adjustsFontForContentSizeCategory = true
         titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        categoryLabel.font = .preferredFont(forTextStyle: .caption1)
+        categoryLabel.textColor = .secondaryLabel
+        categoryLabel.adjustsFontForContentSizeCategory = true
+        categoryLabel.numberOfLines = 1
 
         dueDateLabel.font = .preferredFont(forTextStyle: .caption1)
         dueDateLabel.textColor = .secondaryLabel
@@ -50,22 +60,38 @@ final class TaskCell: UITableViewCell {
             priorityBadge.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             priorityBadge.trailingAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor),
 
+            categoryLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            categoryLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
+            categoryLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor),
+
             dueDateLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            dueDateLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            dueDateLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 2),
             dueDateLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
             dueDateLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor)
         ])
+        categoryHeightConstraint = categoryLabel.heightAnchor.constraint(equalToConstant: 0)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(task: Task) {
+    func configure(task: Task, categoryName: String?) {
         accessibilityIdentifier = AccessibilityIDs.TaskCell.container(taskId: task.id)
         titleLabel.text = task.title
         titleLabel.accessibilityIdentifier = AccessibilityIDs.TaskCell.title(taskId: task.id)
         titleLabel.textColor = task.isCompleted ? .secondaryLabel : .label
+
+        if let name = categoryName, !name.isEmpty {
+            categoryLabel.isHidden = false
+            categoryHeightConstraint.isActive = false
+            categoryLabel.text = name
+            categoryLabel.accessibilityIdentifier = AccessibilityIDs.TaskCell.category(taskId: task.id)
+        } else {
+            categoryLabel.isHidden = true
+            categoryLabel.text = nil
+            categoryHeightConstraint.isActive = true
+        }
 
         let dateStr: String
         if let d = task.dueDate {
