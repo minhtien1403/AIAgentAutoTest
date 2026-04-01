@@ -20,6 +20,7 @@
         <attribute name="isCompleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="priorityRaw" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="taskStatusRaw" optional="YES" attributeType="String"/>
         <relationship name="subtasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SubtaskEntity" inverseName="task" inverseEntity="SubtaskEntity"/>
     </entity>
 </model>

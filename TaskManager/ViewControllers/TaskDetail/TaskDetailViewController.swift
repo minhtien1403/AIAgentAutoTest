@@ -23,7 +23,9 @@ final class TaskDetailViewController: UIViewController {
     private let categoryLabel = UILabel()
     private let descriptionLabel = UILabel()
     private let dueDateLabel = UILabel()
-    private let statusLabel = UILabel()
+    private let taskStatusRow = UIStackView()
+    private let taskStatusBadge = TaskStatusBadgeView()
+    private let taskStatusChangeButton = UIButton(type: .system)
     private let subtasksHeadingLabel = UILabel()
     private let subtasksTableView = UITableView(frame: .zero, style: .plain)
     private let addSubtaskButton = UIButton(type: .system)
@@ -137,8 +139,36 @@ final class TaskDetailViewController: UIViewController {
         dueDateLabel.font = .preferredFont(forTextStyle: .body)
         dueDateLabel.accessibilityIdentifier = AccessibilityIDs.TaskDetail.dueDate
 
-        statusLabel.font = .preferredFont(forTextStyle: .headline)
-        statusLabel.accessibilityIdentifier = AccessibilityIDs.TaskDetail.completionStatus
+        taskStatusRow.axis = .horizontal
+        taskStatusRow.alignment = .center
+        taskStatusRow.spacing = 12
+        taskStatusRow.distribution = .fill
+
+        taskStatusBadge.setContentHuggingPriority(.required, for: .horizontal)
+        taskStatusBadge.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        var statusBtnConfig = UIButton.Configuration.plain()
+        statusBtnConfig.title = String(localized: "Change status")
+        statusBtnConfig.image = UIImage(systemName: "chevron.down.circle")
+        statusBtnConfig.imagePlacement = .trailing
+        statusBtnConfig.imagePadding = 6
+        statusBtnConfig.baseForegroundColor = .systemBlue
+        let bodyFont = UIFont.preferredFont(forTextStyle: .subheadline)
+        statusBtnConfig.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var out = incoming
+            out.font = bodyFont
+            return out
+        }
+        taskStatusChangeButton.configuration = statusBtnConfig
+        taskStatusChangeButton.accessibilityIdentifier = AccessibilityIDs.TaskDetail.taskStatusChangeButton
+        taskStatusChangeButton.accessibilityLabel = String(localized: "Change status")
+        taskStatusChangeButton.addAction(UIAction { [weak self] _ in self?.presentStatusPicker() }, for: .touchUpInside)
+
+        let statusSpacer = UIView()
+        statusSpacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        taskStatusRow.addArrangedSubview(taskStatusBadge)
+        taskStatusRow.addArrangedSubview(statusSpacer)
+        taskStatusRow.addArrangedSubview(taskStatusChangeButton)
 
         subtasksHeadingLabel.text = String(localized: "Subtasks")
         subtasksHeadingLabel.font = .preferredFont(forTextStyle: .subheadline)
@@ -175,7 +205,7 @@ final class TaskDetailViewController: UIViewController {
         stack.addArrangedSubview(categoryLabel)
         stack.addArrangedSubview(descriptionLabel)
         stack.addArrangedSubview(dueDateLabel)
-        stack.addArrangedSubview(statusLabel)
+        stack.addArrangedSubview(taskStatusRow)
         stack.addArrangedSubview(subtasksHeadingLabel)
         stack.addArrangedSubview(subtasksTableView)
         stack.addArrangedSubview(addSubtaskButton)
@@ -255,7 +285,11 @@ final class TaskDetailViewController: UIViewController {
         } else {
             dueDateLabel.text = "No due date"
         }
-        statusLabel.text = t.isCompleted ? "Completed" : "Active"
+        taskStatusBadge.configure(
+            taskStatus: t.taskStatus,
+            accessibilityId: AccessibilityIDs.TaskDetail.taskStatusBadge,
+            style: .tag
+        )
         let toggleTitle = t.isCompleted ? String(localized: "Mark as active") : String(localized: "Mark complete")
         Self.stylePlainActionButtonTitle(toggleCompleteButton, title: toggleTitle, titleColor: .white)
         toggleCompleteButton.accessibilityLabel = toggleTitle
@@ -329,6 +363,32 @@ final class TaskDetailViewController: UIViewController {
             try viewModel.toggleCompletion()
             applyTask()
         } catch {}
+    }
+
+    private func presentStatusPicker() {
+        let alert = UIAlertController(
+            title: String(localized: "Status"),
+            message: String(localized: "Choose task status"),
+            preferredStyle: .actionSheet
+        )
+        alert.view.accessibilityIdentifier = AccessibilityIDs.TaskDetail.statusPickerAlert
+        for status in TaskStatus.allCases {
+            let action = UIAlertAction(title: status.displayName, style: .default) { [weak self] _ in
+                guard let self else { return }
+                do {
+                    try self.viewModel.setTaskStatus(status)
+                    self.applyTask()
+                } catch {}
+            }
+            alert.addAction(action)
+        }
+        alert.addAction(UIAlertAction(title: String(localized: "Cancel"), style: .cancel))
+        if let pop = alert.popoverPresentationController {
+            pop.sourceView = taskStatusChangeButton
+            pop.sourceRect = taskStatusChangeButton.bounds
+            pop.permittedArrowDirections = [.up, .down]
+        }
+        present(alert, animated: true)
     }
 
     private static func stylePlainActionButtonTitle(_ button: UIButton, title: String, titleColor: UIColor) {

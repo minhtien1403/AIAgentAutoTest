@@ -57,7 +57,7 @@ description: Implements UIKit features in the TaskManager (SmartTask) iOS app fo
 ## Reusable components (prefer these)
 
 - `AppHeaderView` — titles and icon buttons; reuse `AccessibilityIDs.AppHeader` with a distinct `context` string per screen.
-- `TaskInputField`, `DescriptionTextInputContainer`, `SimpleDatePickerView`, `EmptyStateView`, `PriorityBadgeView` when appropriate.
+- `TaskInputField`, `DescriptionTextInputContainer`, `CalendarDatePickerView`, `EmptyStateView`, `PriorityBadgeView` when appropriate.
 
 ## App entry
 

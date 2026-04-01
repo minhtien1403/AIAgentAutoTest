@@ -5,8 +5,10 @@ final class TaskCell: UITableViewCell {
 
     private let titleLabel = UILabel()
     private let categoryLabel = UILabel()
+    private let metaRow = UIStackView()
     private let dueDateLabel = UILabel()
     private let priorityBadge = PriorityBadgeView()
+    private let taskStatusBadge = TaskStatusBadgeView()
     private let completeButton = UIButton(type: .system)
 
     var onCompleteTapped: (() -> Void)?
@@ -17,12 +19,20 @@ final class TaskCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .default
         contentView.addSubview(titleLabel)
-        contentView.addSubview(categoryLabel)
+        contentView.addSubview(metaRow)
         contentView.addSubview(dueDateLabel)
         contentView.addSubview(priorityBadge)
         contentView.addSubview(completeButton)
+        metaRow.addArrangedSubview(categoryLabel)
+        metaRow.addArrangedSubview(UIView())
+        metaRow.addArrangedSubview(taskStatusBadge)
+        metaRow.axis = .horizontal
+        metaRow.alignment = .center
+        metaRow.spacing = 8
+        metaRow.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
+        taskStatusBadge.translatesAutoresizingMaskIntoConstraints = false
         dueDateLabel.translatesAutoresizingMaskIntoConstraints = false
         priorityBadge.translatesAutoresizingMaskIntoConstraints = false
         completeButton.translatesAutoresizingMaskIntoConstraints = false
@@ -60,12 +70,12 @@ final class TaskCell: UITableViewCell {
             priorityBadge.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             priorityBadge.trailingAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor),
 
-            categoryLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            categoryLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
-            categoryLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor),
+            metaRow.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            metaRow.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
+            metaRow.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
 
             dueDateLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            dueDateLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 2),
+            dueDateLabel.topAnchor.constraint(equalTo: metaRow.bottomAnchor, constant: 2),
             dueDateLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
             dueDateLabel.trailingAnchor.constraint(lessThanOrEqualTo: contentView.layoutMarginsGuide.trailingAnchor)
         ])
@@ -108,6 +118,11 @@ final class TaskCell: UITableViewCell {
         priorityBadge.configure(
             priority: task.priority,
             accessibilityId: AccessibilityIDs.TaskCell.priorityBadge(taskId: task.id)
+        )
+
+        taskStatusBadge.configure(
+            taskStatus: task.taskStatus,
+            accessibilityId: AccessibilityIDs.TaskCell.taskStatusBadge(taskId: task.id)
         )
 
         completeButton.isSelected = task.isCompleted

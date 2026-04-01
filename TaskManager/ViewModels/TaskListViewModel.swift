@@ -85,11 +85,16 @@ final class TaskListViewModel {
         do {
             let subs = try subtaskRepository.fetchSubtasks(taskId: id)
             if subs.isEmpty {
-                task.isCompleted.toggle()
+                task.toggleCompletionWithStatusSync()
             } else {
                 let newCompleted = !task.isCompleted
                 try subtaskRepository.setAllSubtasksCompleted(taskId: id, completed: newCompleted)
                 task.isCompleted = newCompleted
+                if newCompleted {
+                    task.taskStatus = .done
+                } else if task.taskStatus == .done {
+                    task.taskStatus = .todo
+                }
             }
             try repository.save(task)
             load()

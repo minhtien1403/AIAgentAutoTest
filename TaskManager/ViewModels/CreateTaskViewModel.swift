@@ -14,6 +14,7 @@ final class CreateTaskViewModel {
     var titleText: String = ""
     var descriptionText: String = ""
     var priority: Priority = .medium
+    var taskStatus: TaskStatus = .todo
     var dueDate: Date?
     var hasDueDate: Bool = false
     var categoryId: UUID?
@@ -31,6 +32,7 @@ final class CreateTaskViewModel {
             titleText = task.title
             descriptionText = task.description ?? ""
             priority = task.priority
+            taskStatus = task.taskStatus
             dueDate = task.dueDate
             hasDueDate = task.dueDate != nil
             categoryId = task.categoryId
@@ -59,6 +61,7 @@ final class CreateTaskViewModel {
                 title: trimmedTitle,
                 description: desc.isEmpty ? nil : desc,
                 priority: priority,
+                taskStatus: taskStatus,
                 dueDate: hasDueDate ? dueDate : nil,
                 categoryId: categoryId
             )
@@ -68,6 +71,7 @@ final class CreateTaskViewModel {
             updated.title = trimmedTitle
             updated.description = desc.isEmpty ? nil : desc
             updated.priority = priority
+            updated.applyTaskStatus(taskStatus)
             updated.dueDate = hasDueDate ? dueDate : nil
             updated.categoryId = categoryId
             try repository.save(updated)

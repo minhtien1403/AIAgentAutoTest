@@ -30,12 +30,24 @@ final class TaskDetailViewModel {
         let subs = try subtaskRepository.fetchSubtasks(taskId: task.id)
         var t = task
         if subs.isEmpty {
-            t.isCompleted.toggle()
+            t.toggleCompletionWithStatusSync()
         } else {
             let newCompleted = !t.isCompleted
             try subtaskRepository.setAllSubtasksCompleted(taskId: task.id, completed: newCompleted)
             t.isCompleted = newCompleted
+            if newCompleted {
+                t.taskStatus = .done
+            } else if t.taskStatus == .done {
+                t.taskStatus = .todo
+            }
         }
+        try repository.save(t)
+        task = t
+    }
+
+    func setTaskStatus(_ newStatus: TaskStatus) throws {
+        var t = task
+        t.applyTaskStatus(newStatus)
         try repository.save(t)
         task = t
     }

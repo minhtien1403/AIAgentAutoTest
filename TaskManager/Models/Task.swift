@@ -1,5 +1,21 @@
 import Foundation
 
+enum TaskStatus: String, CaseIterable, Codable, Sendable {
+    case todo
+    case doing
+    case done
+    case late
+
+    var displayName: String {
+        switch self {
+        case .todo: return "TODO"
+        case .doing: return "DOING"
+        case .done: return "DONE"
+        case .late: return "LATE"
+        }
+    }
+}
+
 enum Priority: String, CaseIterable, Codable, Sendable {
     case low
     case medium
@@ -27,6 +43,7 @@ struct Task: Equatable, Sendable, Identifiable {
     var title: String
     var description: String?
     var priority: Priority
+    var taskStatus: TaskStatus
     var dueDate: Date?
     var isCompleted: Bool
     var categoryId: UUID?
@@ -37,6 +54,7 @@ struct Task: Equatable, Sendable, Identifiable {
         title: String,
         description: String? = nil,
         priority: Priority = .medium,
+        taskStatus: TaskStatus = .todo,
         dueDate: Date? = nil,
         isCompleted: Bool = false,
         categoryId: UUID? = nil,
@@ -46,9 +64,27 @@ struct Task: Equatable, Sendable, Identifiable {
         self.title = title
         self.description = description
         self.priority = priority
+        self.taskStatus = taskStatus
         self.dueDate = dueDate
-        self.isCompleted = isCompleted
+        self.isCompleted = (taskStatus == .done) ? true : isCompleted
         self.categoryId = categoryId
         self.createdAt = createdAt
+    }
+
+    /// Updates workflow status and keeps `isCompleted` aligned (`true` only for `.done`).
+    mutating func applyTaskStatus(_ newStatus: TaskStatus) {
+        taskStatus = newStatus
+        isCompleted = (newStatus == .done)
+    }
+
+    /// Toggles completion and maps to `.done` / `.todo` for status.
+    mutating func toggleCompletionWithStatusSync() {
+        if isCompleted {
+            isCompleted = false
+            if taskStatus == .done { taskStatus = .todo }
+        } else {
+            isCompleted = true
+            taskStatus = .done
+        }
     }
 }

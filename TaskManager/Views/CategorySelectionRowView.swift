@@ -1,11 +1,10 @@
 import UIKit
 
-/// "Category" heading + tappable row that navigates to a separate picker screen.
+/// Tappable row that navigates to a separate picker screen. Use a section label above (e.g. in the form stack) for the field title.
 final class CategorySelectionRowView: UIView {
 
     var onTap: (() -> Void)?
 
-    private let headingLabel = UILabel()
     private let tapControl = UIControl()
     private let valueLabel = UILabel()
     private let chevronView = UIImageView()
@@ -13,10 +12,6 @@ final class CategorySelectionRowView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
-
-        headingLabel.text = String(localized: "Category")
-        headingLabel.font = .preferredFont(forTextStyle: .subheadline)
-        headingLabel.textColor = .secondaryLabel
 
         tapControl.translatesAutoresizingMaskIntoConstraints = false
         tapControl.backgroundColor = .secondarySystemGroupedBackground
@@ -42,17 +37,12 @@ final class CategorySelectionRowView: UIView {
         chevronView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .body, scale: .default)
         chevronView.isAccessibilityElement = false
 
-        addSubview(headingLabel)
         addSubview(tapControl)
         tapControl.addSubview(valueLabel)
         tapControl.addSubview(chevronView)
 
         NSLayoutConstraint.activate([
-            headingLabel.topAnchor.constraint(equalTo: topAnchor),
-            headingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            headingLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-            tapControl.topAnchor.constraint(equalTo: headingLabel.bottomAnchor, constant: 6),
+            tapControl.topAnchor.constraint(equalTo: topAnchor),
             tapControl.leadingAnchor.constraint(equalTo: leadingAnchor),
             tapControl.trailingAnchor.constraint(equalTo: trailingAnchor),
             tapControl.bottomAnchor.constraint(equalTo: bottomAnchor),

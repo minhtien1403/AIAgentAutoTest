@@ -16,8 +16,9 @@ final class CreateTaskViewController: UIViewController {
     private let dueDateRow = UIStackView()
     private let includeDueDateLabel = UILabel()
     private let includeDueDateSwitch = UISwitch()
-    private let dueDatePicker = SimpleDatePickerView()
+    private let dueDatePicker = CalendarDatePickerView()
     private let clearDueDateButton = UIButton(type: .system)
+    private let categoryLabel = UILabel()
     private let categorySelectionRow = CategorySelectionRowView()
 
     init(viewModel: CreateTaskViewModel, onDone: @escaping () -> Void) {
@@ -115,6 +116,11 @@ final class CreateTaskViewController: UIViewController {
         priorityControl.accessibilityIdentifier = AccessibilityIDs.CreateTask.priorityControl
         priorityControl.accessibilityLabel = "Priority"
 
+        categoryLabel.text = String(localized: "Category")
+        categoryLabel.font = .preferredFont(forTextStyle: .subheadline)
+        categoryLabel.textColor = .secondaryLabel
+        categoryLabel.isAccessibilityElement = false
+
         includeDueDateLabel.text = "Due date"
         includeDueDateLabel.font = .preferredFont(forTextStyle: .body)
         includeDueDateSwitch.isOn = viewModel.hasDueDate
@@ -156,6 +162,7 @@ final class CreateTaskViewController: UIViewController {
         contentStack.addArrangedSubview(descriptionInputContainer)
         contentStack.addArrangedSubview(priorityLabel)
         contentStack.addArrangedSubview(priorityControl)
+        contentStack.addArrangedSubview(categoryLabel)
         contentStack.addArrangedSubview(categorySelectionRow)
         contentStack.addArrangedSubview(dueDateRow)
         contentStack.addArrangedSubview(clearDueDateButton)

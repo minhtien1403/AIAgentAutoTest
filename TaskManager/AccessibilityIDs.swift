@@ -47,6 +47,7 @@ enum AccessibilityIDs {
         static func container(taskId: UUID) -> String { "smartTask_taskCell_\(taskId.uuidString)" }
         static func title(taskId: UUID) -> String { "smartTask_taskCell_title_\(taskId.uuidString)" }
         static func priorityBadge(taskId: UUID) -> String { "smartTask_taskCell_priorityBadge_\(taskId.uuidString)" }
+        static func taskStatusBadge(taskId: UUID) -> String { "smartTask_taskCell_taskStatusBadge_\(taskId.uuidString)" }
         static func dueDate(taskId: UUID) -> String { "smartTask_taskCell_dueDate_\(taskId.uuidString)" }
         static func completeToggle(taskId: UUID) -> String { "smartTask_taskCell_completeToggle_\(taskId.uuidString)" }
         static func category(taskId: UUID) -> String { "smartTask_taskCell_category_\(taskId.uuidString)" }
@@ -59,7 +60,9 @@ enum AccessibilityIDs {
         static let description = "smartTask_taskDetail_description"
         static let priority = "smartTask_taskDetail_priority"
         static let dueDate = "smartTask_taskDetail_dueDate"
-        static let completionStatus = "smartTask_taskDetail_completionStatus"
+        static let taskStatusBadge = "smartTask_taskDetail_taskStatusBadge"
+        static let taskStatusChangeButton = "smartTask_taskDetail_taskStatusChangeButton"
+        static let statusPickerAlert = "smartTask_taskDetail_statusPickerAlert"
         static let editButton = "smartTask_taskDetail_editButton"
         static let deleteButton = "smartTask_taskDetail_deleteButton"
         static let markCompleteButton = "smartTask_taskDetail_markCompleteButton"
@@ -83,6 +86,8 @@ enum AccessibilityIDs {
         static let cancelButton = "smartTask_taskForm_cancelButton"
         static let validationAlert = "smartTask_taskForm_validationAlert"
         static let categorySelectionRow = "smartTask_taskForm_categorySelectionRow"
+        /// Grid slot index (0…41) for the month calendar; stable reading order (row-major).
+        static func calendarDayCell(index: Int) -> String { "smartTask_taskForm_calendarDay_\(index)" }
     }
 
     enum DeleteConfirm {
