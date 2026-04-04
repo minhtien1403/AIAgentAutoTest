@@ -60,6 +60,7 @@ final class TaskDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemGroupedBackground
         view.accessibilityIdentifier = AccessibilityIDs.TaskDetail.screen
+        hideKeyboardWhenTappedAround()
 
         subtaskViewModel = SubtaskViewModel(
             subtaskRepository: subtaskRepository,

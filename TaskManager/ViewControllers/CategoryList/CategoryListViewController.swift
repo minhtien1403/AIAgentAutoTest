@@ -28,6 +28,7 @@ final class CategoryListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemGroupedBackground
         view.accessibilityIdentifier = AccessibilityIDs.CategoryList.screen
+        hideKeyboardWhenTappedAround()
 
         appHeaderView.addLeadingIconButton(
             systemImageName: "chevron.left",

@@ -150,4 +150,15 @@ extension UIViewController {
             header.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
+
+    /// Adds a tap gesture recognizer that dismisses the keyboard when tapping outside text inputs.
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardByTap))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc private func dismissKeyboardByTap() {
+        view.endEditing(true)
+    }
 }

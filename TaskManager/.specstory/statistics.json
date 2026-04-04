@@ -1,0 +1,112 @@
+{
+  "sessions": {
+    "0317cca8-b6ba-42b9-b279-cd7181ad35f0": {
+      "user_message_count": 1,
+      "agent_message_count": 135,
+      "start_timestamp": "2026-03-31T22:52:48+07:00",
+      "end_timestamp": "2026-03-31T22:52:48+07:00",
+      "markdown_size_bytes": 79753,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:24:47Z"
+    },
+    "1b5b332f-3bba-48b2-8408-a384bc8ed33d": {
+      "user_message_count": 6,
+      "agent_message_count": 200,
+      "start_timestamp": "2026-04-01T21:08:56+07:00",
+      "end_timestamp": "2026-04-01T21:08:56+07:00",
+      "markdown_size_bytes": 216111,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:24:47Z"
+    },
+    "2a09b45f-1fc6-4ebc-bd27-ae2d467e09d6": {
+      "user_message_count": 6,
+      "agent_message_count": 81,
+      "start_timestamp": "2026-04-01T21:06:32+07:00",
+      "end_timestamp": "2026-04-01T21:06:32+07:00",
+      "markdown_size_bytes": 70071,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:24:47Z"
+    },
+    "69b067b0-5b0e-4db8-b741-cb2ad04b58f6": {
+      "user_message_count": 1,
+      "agent_message_count": 32,
+      "start_timestamp": "2026-04-01T00:05:38+07:00",
+      "end_timestamp": "2026-04-01T00:05:38+07:00",
+      "markdown_size_bytes": 16971,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:24:47Z"
+    },
+    "77b2edef-a58b-4b14-aa94-e83b7b0cc877": {
+      "user_message_count": 4,
+      "agent_message_count": 23,
+      "start_timestamp": "2026-04-03T23:42:49+07:00",
+      "end_timestamp": "2026-04-03T23:42:49+07:00",
+      "markdown_size_bytes": 28287,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:24:47Z"
+    },
+    "8059a72f-7ceb-4df6-a252-229d9ac50641": {
+      "user_message_count": 1,
+      "agent_message_count": 3,
+      "start_timestamp": "2026-04-04T10:24:38+07:00",
+      "end_timestamp": "2026-04-04T10:24:38+07:00",
+      "markdown_size_bytes": 1528,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:25:34Z"
+    },
+    "8eeec7bb-3a72-4eab-bf08-30cb4386ce01": {
+      "user_message_count": 3,
+      "agent_message_count": 97,
+      "start_timestamp": "2026-04-01T20:57:12+07:00",
+      "end_timestamp": "2026-04-01T20:57:12+07:00",
+      "markdown_size_bytes": 211121,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:24:47Z"
+    },
+    "ca93226e-eb65-4528-a38c-003e6aec8c98": {
+      "user_message_count": 10,
+      "agent_message_count": 323,
+      "start_timestamp": "2026-04-01T21:17:02+07:00",
+      "end_timestamp": "2026-04-01T21:17:02+07:00",
+      "markdown_size_bytes": 406231,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:24:47Z"
+    },
+    "cfe3a4f7-e210-4334-9c8f-0b22b446054e": {
+      "user_message_count": 31,
+      "agent_message_count": 964,
+      "start_timestamp": "2026-03-31T21:52:10+07:00",
+      "end_timestamp": "2026-03-31T21:52:10+07:00",
+      "markdown_size_bytes": 857926,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:24:47Z"
+    },
+    "d7e1a7f1-c76c-4cd3-af4a-f31ee033e624": {
+      "user_message_count": 4,
+      "agent_message_count": 123,
+      "start_timestamp": "2026-04-04T08:44:32+07:00",
+      "end_timestamp": "2026-04-04T08:44:32+07:00",
+      "markdown_size_bytes": 388295,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:24:47Z"
+    },
+    "ef481bed-15b2-4c9e-ad7c-e27aec47cea2": {
+      "user_message_count": 2,
+      "agent_message_count": 168,
+      "start_timestamp": "2026-04-01T00:06:47+07:00",
+      "end_timestamp": "2026-04-01T00:06:47+07:00",
+      "markdown_size_bytes": 159383,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:24:47Z"
+    },
+    "task-toolu_vrtx_01M5RV5MEWLM88qHrP6zJPdb": {
+      "user_message_count": 0,
+      "agent_message_count": 8,
+      "start_timestamp": "2026-04-04T10:26:00+07:00",
+      "end_timestamp": "2026-04-04T10:26:00+07:00",
+      "markdown_size_bytes": 110690,
+      "provider": "cursoride",
+      "last_updated": "2026-04-04T03:26:44Z"
+    }
+  }
+}

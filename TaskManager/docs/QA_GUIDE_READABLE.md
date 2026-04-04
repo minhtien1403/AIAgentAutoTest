@@ -6,7 +6,7 @@ For **dense tables**, **exact acceptance criteria**, and a **full automation ID 
 
 ---
 
-## What you’re testing
+## What you're testing
 
 **SmartTask** is a local task manager on iOS. Tasks are saved on the device (Core Data). There is no sign-in or cloud sync in this scope.
 
@@ -48,7 +48,7 @@ Think of the app as a stack of screens:
 **What you see**
 
 - Title **SmartTask** in a custom header (not the system navigation bar).
-- A **search** field: “Search tasks.”
+- A **search** field: "Search tasks."
 - A table of tasks with title, priority, a **status badge** (TODO, DOING, DONE, LATE), due date when set, category when set, and a way to mark complete.
 - When there are no tasks (or nothing matches filters/search), a friendly **empty state** message.
 - Header actions: **folder** (categories), **tag** (filter by category), **lines** (filter by active/completed), **plus** (add task).
@@ -59,7 +59,7 @@ Think of the app as a stack of screens:
 - Tap a task → opens **detail**.
 - Use search → list narrows by words in the **title or description** (not case sensitive).
 - Open **Filter** → pick All, Active, or Completed.
-- Open **filter by category** → pick a category or “all categories.”
+- Open **filter by category** → pick a category or "all categories."
 - Mark a task complete from the row → it should update; under **Active** filter it may disappear.
 - Swipe a row: one side **delete**, other side **complete / mark active**.
 
@@ -77,14 +77,12 @@ Think of the app as a stack of screens:
 - **Cancel** (X) on the left, **Save** (checkmark) on the right.
 - **Title** (required), **Description** (optional), **Priority** (Low / Medium / High).
 - **Category** section: tap the row to choose a category (or none).
-- **Due date** switch: when on, you see a **calendar card**, **Clear due date**, and **Cancel / Apply** at the bottom of the card.
+- **Due date** switch: when on, you see a **calendar card** and **Clear due date**.
 
 **Due date calendar — how it should feel**
 
 - Arrows move **month** or **year**; the grid shows about six weeks of day cells.
-- Tap a day to select it (only valid dates in the allowed range).
-- **Apply** “locks in” that date for when you save the task.
-- **Cancel** puts the selection back to whatever was last applied (not whatever you tapped before canceling).
+- Tap a day to select it immediately (only valid dates in the allowed range). The selected date is used when you save the task.
 - Turning the **Due date** switch **off** means the task has **no** due date when you save.
 - **Clear due date** turns the switch off and hides the calendar.
 
@@ -140,11 +138,11 @@ Open from the task list header (**folder** icon).
 - **Change status** → opens a sheet to pick one of those four.
 - **Subtasks** section, **Add subtask**, then **Edit**, **Delete**, and **Mark complete** / **Mark as active**.
 
-**Status vs “complete”**
+**Status vs "complete"**
 
 - Picking **DONE** in the status sheet should treat the task as **completed**.
 - **Mark complete** / **Mark as active** toggles completion and keeps status aligned (for example complete → DONE, undo from done → TODO).
-- Other statuses (TODO, DOING, LATE) are **not** the same as “completed” unless the task was already completed from elsewhere—use the detail screen to confirm what the app shows after each action.
+- Other statuses (TODO, DOING, LATE) are **not** the same as "completed" unless the task was already completed from elsewhere—use the detail screen to confirm what the app shows after each action.
 
 **Delete**
 
@@ -153,7 +151,7 @@ Open from the task list header (**folder** icon).
 **Subtasks**
 
 - **Add subtask** with an empty title → error **Subtask title cannot be empty.**
-- You can toggle completion and swipe to delete subtasks. When subtasks exist, parent completion can follow “all subtasks done” rules—good area for edge-case tests.
+- You can toggle completion and swipe to delete subtasks. When subtasks exist, parent completion can follow "all subtasks done" rules—good area for edge-case tests.
 
 ---
 
@@ -189,7 +187,7 @@ The app uses fixed **accessibility identifiers** starting with `smartTask_`. You
 **Practical tips**
 
 - The **task list** screen id is `smartTask_taskList_screen`.
-- Each **task row** includes a unique id with the task’s UUID—automation usually finds rows by title or by prefix `smartTask_taskCell_`.
+- Each **task row** includes a unique id with the task's UUID—automation usually finds rows by title or by prefix `smartTask_taskCell_`.
 - The **calendar** exposes a container `smartTask_taskForm_dueDatePicker` and **42 day slots** named `smartTask_taskForm_calendarDay_0` through `smartTask_taskForm_calendarDay_41` (reading order left-to-right, top-to-bottom).
 - **Task detail** exposes `smartTask_taskDetail_taskStatusChangeButton` and the status sheet `smartTask_taskDetail_statusPickerAlert`.
 

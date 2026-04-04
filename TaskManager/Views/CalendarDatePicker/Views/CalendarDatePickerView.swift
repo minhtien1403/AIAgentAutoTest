@@ -1,16 +1,11 @@
 import UIKit
 
-/// Card-style month calendar with Cancel / Apply. Selection updates `date` immediately; Cancel reverts to the last applied date.
+/// Card-style month calendar. Tapping a day selects it immediately.
 final class CalendarDatePickerView: UIControl {
-
-    var onApply: ((Date) -> Void)?
-    var onCancel: (() -> Void)?
 
     private let helper = CalendarHelper()
     private var currentMonth: Date
     private var selectedDate: Date
-    /// Date restored when the user taps Cancel (updated on Apply and on programmatic `setDate`).
-    private var lastAppliedDate: Date
 
     private let minimumDate: Date
     private let maximumDate: Date
@@ -19,7 +14,6 @@ final class CalendarDatePickerView: UIControl {
     private let headerView = CalendarHeaderView()
     private let weekdayHeaderView = WeekdayHeaderView()
     private let gridView: CalendarGridView
-    private let actionView = CalendarActionView()
 
     private let mainStack = UIStackView()
 
@@ -47,7 +41,6 @@ final class CalendarDatePickerView: UIControl {
         let start = helper.normalizeToNoon(clampedNow)
         self.currentMonth = start
         self.selectedDate = start
-        self.lastAppliedDate = start
 
         self.gridView = CalendarGridView(helper: helper)
 
@@ -85,13 +78,9 @@ final class CalendarDatePickerView: UIControl {
         headerView.onNextMonth = { [weak self] in self?.shiftMonth(byMonths: 1) }
         headerView.onNextYear = { [weak self] in self?.shiftMonth(byYears: 1) }
 
-        actionView.onCancel = { [weak self] in self?.handleCancel() }
-        actionView.onApply = { [weak self] in self?.handleApply() }
-
         mainStack.addArrangedSubview(headerView)
         mainStack.addArrangedSubview(weekdayHeaderView)
         mainStack.addArrangedSubview(gridView)
-        mainStack.addArrangedSubview(actionView)
 
         addSubview(clipView)
         clipView.addSubview(mainStack)
@@ -127,7 +116,6 @@ final class CalendarDatePickerView: UIControl {
     func setDate(_ date: Date, animated _: Bool) {
         let normalized = helper.normalizeToNoon(clamp(date, min: minimumDate, max: maximumDate))
         selectedDate = normalized
-        lastAppliedDate = normalized
         currentMonth = normalized
         refreshMonthUI()
         postAccessibilityUpdate()
@@ -136,21 +124,6 @@ final class CalendarDatePickerView: UIControl {
     func configureAutomation(accessibilityIdentifier: String, accessibilityLabel: String) {
         gridView.configureAutomation(accessibilityIdentifier: accessibilityIdentifier, accessibilityLabel: accessibilityLabel)
         syncAutomationValue()
-    }
-
-    private func handleCancel() {
-        selectedDate = lastAppliedDate
-        currentMonth = lastAppliedDate
-        refreshMonthUI()
-        sendActions(for: .valueChanged)
-        onCancel?()
-        postAccessibilityUpdate()
-    }
-
-    private func handleApply() {
-        lastAppliedDate = selectedDate
-        onApply?(selectedDate)
-        postAccessibilityUpdate()
     }
 
     private func shiftMonth(byMonths delta: Int) {

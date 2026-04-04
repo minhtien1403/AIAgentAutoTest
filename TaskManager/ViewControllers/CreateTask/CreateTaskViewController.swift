@@ -62,6 +62,7 @@ final class CreateTaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemGroupedBackground
+        hideKeyboardWhenTappedAround()
 
         switch viewModel.mode {
         case .create:

@@ -33,8 +33,8 @@ Minimal artifacts for writing test cases: feature list + acceptance criteria per
 | Edit mode | Screen id **edit**; header **Edit Task**; fields pre-filled from task; save updates existing task. |
 | Save | **Save** (checkmark) persists task and pops when title is valid. |
 | Category | Section label **Category**; tapping the category row pushes **Category** picker; selection returns to form with row updated. |
-| Due date | **Due date** switch shows/hides **calendar card**, **Clear due date**, and **Cancel** / **Apply** row; switch off → stored due date is nil. |
-| Calendar picker | **Month grid** (`CalendarDatePickerView`): previous/next **month** and **year** change visible month; tapping a **day** selects that date (clamped to min/max range). **Apply** sets the committed date used on save. **Cancel** reverts the selection to the last applied date and refreshes the grid. Root container uses id `dueDatePicker`; day cells use `smartTask_taskForm_calendarDay_<index>` (indices 0…41, row-major). |
+| Due date | **Due date** switch shows/hides **calendar card** and **Clear due date**; switch off → stored due date is nil. |
+| Calendar picker | **Month grid** (`CalendarDatePickerView`): previous/next **month** and **year** change visible month; tapping a **day** immediately selects that date (clamped to min/max range) and it becomes the date used on save. Root container uses id `dueDatePicker`; day cells use `smartTask_taskForm_calendarDay_<index>` (indices 0…41, row-major). |
 | Priority | Segmented control: **Low**, **Medium**, **High** (default **Medium** on new task per model). |
 | Task status (workflow) | **Not edited on this screen in the UI.** New tasks save with status **TODO** (`.todo`). Edit mode keeps the task’s existing status unless changed elsewhere (e.g. task detail). |
 
@@ -246,7 +246,7 @@ Source of truth: `AccessibilityIDs.swift`.
 ### Automation notes
 
 - **New subtask** alert on task detail does not set `accessibilityIdentifier` on the alert view; UI tests may use button titles (**Add**, **Cancel**) or add IDs in `AccessibilityIDs.swift` later.
-- **Calendar** header uses localized accessibility labels (**Previous year**, **Previous month**, **Next month**, **Next year**) on the nav buttons; **Cancel** / **Apply** are plain titles on buttons inside the card (no dedicated IDs in `AccessibilityIDs`).
+- **Calendar** header uses localized accessibility labels (**Previous year**, **Previous month**, **Next month**, **Next year**) on the nav buttons.
 
 ### Task status display names (UI strings)
 

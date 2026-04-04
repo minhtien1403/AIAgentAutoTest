@@ -41,6 +41,7 @@ final class TaskListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemGroupedBackground
         view.accessibilityIdentifier = AccessibilityIDs.TaskList.screen
+        hideKeyboardWhenTappedAround()
 
         appHeaderView.addTrailingIconButton(
             systemImageName: "folder",
